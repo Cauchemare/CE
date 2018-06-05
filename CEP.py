@@ -27,7 +27,6 @@ from sklearn.base import clone
 from sklearn.utils import check_X_y
 import numpy as np
 import pandas as pd
-import  numbers
 from statistics import median
 
 from collections import namedtuple
@@ -36,7 +35,7 @@ from collections import namedtuple
 from sklearn.feature_selection import f_regression,f_classif
 from sklearn.linear_model import   LinearRegression,LogisticRegression 
 from sklearn.preprocessing import StandardScaler,label_binarize
-from sklearn.model_selection import cross_val_score,StratifiedShuffleSplit
+from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score,roc_auc_score,make_scorer
 from sklearn.feature_selection import RFE,RFECV
 from sklearn.pipeline import FeatureUnion,make_pipeline
@@ -70,8 +69,8 @@ class  FSBM(BaseEstimator,TransformerMixin):
             tree_estimator:estimator instane,transformer embedding tree_based model for selecting features based on importance weights,see sklearn.RFECV
     
         Attributes:
-            ls:an estimator,see linear_esimator
-            te:an estimator,see tree_estimator
+            ls:an estimator instance,see linear_esimator
+            te:an estimator instance,{'RFECE','myrfe','selectfrommodel'} instance,an estimator,see tree_estimator
             choosed_features:str,union of features selected by  linear_esimator and tree_estimator
             cols:str,columns names
     Return:
@@ -1232,13 +1231,22 @@ class  Recoded(BaseEstimator,TransformerMixin):
 
 
 class FSBMD(BaseEstimator,TransformerMixin):
-    """
-    
-    
-    
-    
-    
-    
+    """feature selection based on model and decomposition estimator
+            Args:
+                n_components:int; number of component for decomposition estimator,see skleanr.discriminant_analysis.lda if y_dist=='classes'  or sklearn.decomposition.PCA  if y_dist='regression'
+                y_dist:{'classes','regression'}; distribution of target data 
+                scoring:string, callable or None, optional, default: None
+                        A string (see model evaluation documentation) or a scorer callable object / function with signature scorer(estimator, X, y).
+                n_estimators: int ;number  of  estimator in nested tree_based model
+                rfe:class;see class FSBM.te args
+                step:see MyRFECV.step  param
+                cv:see MyRFECV.cv param
+                transformer_weights:see sklearn.pipeline.Feature_Union args
+        Attributes:
+            selected_columns:list of str;list of columns choosed after fit method
+        
+        Method:
+            get_dtransformer:return decompostion estimator,detail  see skleanr.discriminant_analysis.lda if y_dist=='classes'  or sklearn.decomposition.PCA  if y_dist='regression'
     
     """
     def  __init__(self,y_dist='Classes',n_components=None,n_estimators=5,rfe=RFECV,step=1,cv=3,scoring='auto',transformer_weights=None):
@@ -1288,21 +1296,18 @@ class FSBMD(BaseEstimator,TransformerMixin):
         return self.decomposition_estimator
     
 def set_params(estimator,dtype,var=None,attr=None,value=None):
-    """
-    estimator: pipeline features
-    dtype:single  str  {'re_cont','re_bina','re_norm','re_ordi'}
-    attr:re_cont,re_ordi:{'new_var','scale','var_lb','var_miss','var_ub'}
-        re_norm:binary_encoder raise  AttributeError()
-                Index,binary:{'categorie':value}  ,{'categorie':new_var} 
-    value: see  attr descriptions
-    """
-    assert ValueError("estimator is'not  Pipeline object"),isinstance(estimator,sklearn.pipeline.Pipeline)
-    
+    """Inspect all var name corresponding to special dtype,all attributes value corresponding to one given variable;
+    or update value of one given attribute  
+            Args:
+            estimator: fitted instance,CE  instance fitted
+            dtype:str ,{'re_cont','re_bina','re_norm','re_ordi'} ;variable dtype 
+            attr:re_cont,re_ordi:{'new_var','scale','var_lb','var_miss','var_ub'}
+                 re_norm:binary_encoder raise  AttributeError()
+                         Index,binary:{'categorie':value}  ,{'categorie':new_var} 
+            value: see  set_params.attr descriptions
+    """    
     
     combined_f=estimator.named_steps['recoded'].combined_features
-    assert AttributeError('Estimator has not attribute get_params'),hasattr(estimator,'get_params')
-    assert AttributeError('Dtype object  has not attribute fit'),hasattr(estimator.get_params(deep=True)[dtype],'fit')
-    
     
     if var is None:
         #print all columns names from the same dtype
@@ -1319,40 +1324,7 @@ def set_params(estimator,dtype,var=None,attr=None,value=None):
     return 
        
     
-if  __name__ =='__main__':  
-    
-# =============================================================================
-#           Performance
-#           ----------
-#     #processing time 59.156679s  for data (11999, 5479) containg  fit_transform stage <---3h--4h  180+ faster
-#     #transform time 0.418882s    for data (8000, 5479)  just containing  fit stage
-#     
-#           Usage:
-#           ----------
-#     #pull the package into foleder: C:\Users\admin\Anaconda3\Lib\site-packages or set  os.path.chdir(path)
-#     
-# =============================================================================
-    import glob
 
-
-    #5.23   Recoded-->df have missing values  10-->35 continuous,nominal_number,binary_vars  --->addressed  since X_train,y_train index not linspace 
-    #       processing  recoded 3 times    -->addressed
-    #5.24  processing big data ,baise n_estimators for randomforest 100-->10
-                               #n_resampling  for randomizedl1  200->20
-          #update columns attributes --->addressed
-          # n_jobs,np.memmap,read_csv(nrows=) big-data problem
-    # 5.25 sparse data problem
-         #c_uniform,c_dep : df_nomiss is empty series  -->if df.empty: return False
-                    #np.nanpercentile  internally using np.isnull to check nan values-->pd.isnull
-         #490  没有考虑到len(set(y_nomissing_x))==2 y_missing_x_b 没有值
-         #757   add X=X.astype(np.float32)
-         #430  LabelEncoder 之前没有考虑到missing values
-         # re_ordi  中没有考虑到 不需要转化成 category 的 str 转化成numbers
-         #249  value_counts(dropna=False)
-         #当第一次transform的时候 ，定义好self.selected_columns,不会因为后面多次transform而改变原有的self.selected_columns,同理与transform
-    # 5.28  C:\Users\admin\Anaconda3\lib\site-packages\sklearn\discriminant_analysis.py:388: UserWarning: Variables are collinear.
-        #warnings.warn("Variables are collinear.")
-    #5.29;consider using  rfimp package permutation features importance instead of impurity decrease or mean-accuracy increase as feature importance in standard sklean-randomforest
         
 
 
