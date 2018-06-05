@@ -1,0 +1,20 @@
+模型时间和评分评估按照StratifiedKFold(10)得到的平均结果
+ce:18000*5477
+lgb:18000*2840
+ce score:0.601528,lgb score:0.619107,combined score:0.626904
+ce takes:97.860232s,lgb spends:57.973085s  --> 0.005 row/s;0.003 row/s
+
+ce:26999*5477
+lgb:26999*2840
+ce score:0.618160,lgb score:0.630046,combined score:0.636987
+ce takes:151.019735s,lgb spends:111.594232s-->0.00559/s;0.00413/s
+-
+ce:35999*5477
+lgb:35999*2840
+ce score:0.624537,lgb score:0.635411,combined score:0.642808
+ce takes:190.094777s,lgb spends:194.712973s--> 0.00528/s;0.00540/s
+
+ce:44999*5477
+lgb:44999*2840
+ce score:0.619232,lgb score:0.633423,combined score:0.644386
+ce takes:236.097047s,lgb spends:324.200405s-->0.005246/s;0.0072046
