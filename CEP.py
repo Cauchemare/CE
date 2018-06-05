@@ -104,14 +104,19 @@ class  FSBM(BaseEstimator,TransformerMixin):
         return X.loc[:,self.choosed_features]
     
 
-def  auc_mc(y_p,y_t):   
+def  auc_mc(y_t,y_p):   
     #compute auc_score,compatible with multiclass y
-    classes=np.arange(len(np.unique(y_p)))
+    classes=np.arange(len(np.unique(y_t)))
     
     y_predict=label_binarize(y_p,classes=classes)
     y_true=label_binarize(y_t,classes=classes)
+    try:
+       s= roc_auc_score(y_true.ravel(),y_predict.ravel())
+    except Exception:
+        print('auc_mc error',y_true[:10],y_predict[:10])
+        return 
     
-    return roc_auc_score(y_true.ravel(),y_predict.ravel())
+    return s
 
 
 class MyRFECV(RFE,MetaEstimatorMixin):
@@ -249,8 +254,8 @@ def writecorr(X,X_selected,y,out=None,method='spearman'):
     writer=pd.ExcelWriter(out)
     
     
-    x.apply(lambda col: col.corr(x.y_target,method=method),axis=0).drop('y_target').to_excel(writer,'all_variables',encoding='utf8',header=['y_target'])
-    x_s.apply(lambda col: col.corr(x.y_target,method=method),axis=0).drop('y_target').to_excel(writer,'seleted_variables',encoding='utf8',header=['y_target'])
+    x.apply(lambda col: col.corr(x.y_target,method=method),axis=0).to_excel(writer,'all_variables',encoding='utf8',header=['y_target'])
+    x_s.apply(lambda col: col.corr(x.y_target,method=method),axis=0).to_excel(writer,'seleted_variables',encoding='utf8',header=['y_target'])
     
     writer.save()
     
@@ -522,7 +527,7 @@ def  pnum(X,y=None,cont_var= None,impmethod=None,transf=None,standardtransform=N
         
         nmiss=df_miss.sum()
         des=df.describe(percentiles=[0.01,0.25,0.75,0.99]).values  
-        var=namedtuple('describe',['count', 'mean', 'std', 'min', 'p1', 'p25', 'p50', 'p75', 'p99', 'max'])._make(*des)
+        var=namedtuple('describe',['count', 'mean', 'std', 'min', 'p1', 'p25', 'p50', 'p75', 'p99', 'max'])._make(des)
         med=median(df[~df_miss]) 
         
         iqr=np.max((var.p75-var.p25,var.p99-var.p75,var.p25-var.p1))
@@ -546,7 +551,7 @@ def  pnum(X,y=None,cont_var= None,impmethod=None,transf=None,standardtransform=N
         elif  impmethod in  ('sum','euclen','ustd','maxabs'):
             var_miss=0   
             
-        df_nonmissing=nonmissing(np.append(y[:,np.newaxis],df.values,axis=1),var_lb,var_ub,transformation=transf)   
+        df_nonmissing=nonmissing(np.append(y[:,np.newaxis],df.values[:,np.newaxis],axis=1),var_lb,var_ub,transformation=transf)   
         
         var_names=[cont_var]
         if transf:
@@ -1192,7 +1197,7 @@ class  Recoded(BaseEstimator,TransformerMixin):
         self.y=Y
         columns={'cont_cols','ordi_cols','norm_cols','bina_cols'}
         
-        assert len(columns.intersection(self.type_cols.keys()))==0,ValueError('type_cols keys not standard')
+        assert len(columns.intersection(self.type_cols.keys()))!=0,ValueError('type_cols keys not standard')
         
         try:
             re_c=re_cont(self.type_cols['cont_cols'],os.path.join(self.out,'ce2_cont_test.csv'))
