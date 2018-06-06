@@ -1,4 +1,13 @@
-模型时间和评分评估按照StratifiedKFold(10)得到的平均结果
+﻿mean-run-time and mean-score based on StratifiedKFold(10)
+ce:CEP model
+lgb:FSFRL model
+
+e.g: 
+ce:18000*5477 ->input data shape:18000 rows * 5477 columns for CEP model
+combined score ->score based on data combing CEP result and FSFRL result
+
+
+Report:
 ce:18000*5477
 lgb:18000*2840
 ce score:0.601528,lgb score:0.619107,combined score:0.626904
