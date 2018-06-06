@@ -7,7 +7,7 @@ mean-run-time and mean-score based on StratifiedKFold(10)
 ce:CEP model
 lgb:FSFRL model
 
-e.g: 
+Description: 
 ce:18000*5477 ->input data shape:18000 rows * 5477 columns for CEP model
 combined score ->score based on data combing CEP result and FSFRL result
 
