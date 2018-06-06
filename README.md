@@ -1,12 +1,31 @@
 # CE
-Feature_selection_project
+>**Column_Encoder**,
+>Feature selection project
 
 
-But:
+##But:
+###CEP:
+Recoded input data and output **Profiling**,**matrix correlation with target data** files and **recoded** data
+
+###FSFRL:
+Feature selection from raw_data based lightgbm
 
 
 
-Structure plan:
+##Structure plan:
 
-CE:
+###CEP:
+>![](https://i.imgur.com/gOFI0Xf.png)
+
+###FSFML:
+>**Optimized Lightgbm for Sparse Data**
+
+##Basic Usage
+>see CEP_Test.py
+
+##Time consumption and Report
+>see CE_Test report.txt
+
+
+
   

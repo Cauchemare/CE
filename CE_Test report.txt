@@ -1,4 +1,9 @@
-﻿mean-run-time and mean-score based on StratifiedKFold(10)
+﻿Computer Configuration:
+core: Inter Core i5-6200U CPU@2.3GHz 2.40 GHz
+RAW: 8.00GB
+
+
+mean-run-time and mean-score based on StratifiedKFold(10)
 ce:CEP model
 lgb:FSFRL model
 
