@@ -20,17 +20,6 @@ import lightgbm as lgb
 
 import argparse
 
-# =============================================================================
-#           Performance
-#           ----------
-#     #processing time 59.156679s  for data (11999, 5479) containg  fit_transform stage <---3h--4h  180+ faster
-#     #transform time 0.418882s    for data (8000, 5479)  just containing  fit stage
-#     
-#           Usage:
-#           ----------
-#     #pull the package into foleder: C:\Users\admin\Anaconda3\Lib\site-packages\__pycache__  or set  os.path.chdir(path)
-#     
-# =============================================================================
 
 parser=argparse.ArgumentParser()
 parser.add_argument('n',type=int)
@@ -60,9 +49,8 @@ X=df.loc[:,x_cols]
 Y=df.loc[:,y_col].astype(np.integer)
 
 del  df,cols_names
-#    
-#    X=pd.concat([X]*1000,ignore_index=True)
-#    y=pd.concat([y]*1000,ignore_index=True)
+
+
 from collections import defaultdict
 
 
@@ -139,109 +127,6 @@ for train_index,test_index in sss.split(X,Y):
     
 print ('ce score:{0:.6f},lgb score:{1:6f},combined score:{2:.6f}'.format(*[np.mean(scores[i]) for i in  ['ce','lgb','combined']] ))
 print ('ce takes:{0:.6f}s,lgb spends:{1:6f}s'.format(*[np.mean(times[i]) for i in  ['ce','lgb']] ))
-
-
-# =============================================================================
-# CEP.Recoded:
-#     Params:
-#         ----------
-#
-#         type_cols:dict or  mapping type  {'cont_cols':list,'ordi_cols':list,'norm_cols':[],'bina_cols':[]}
-#         Profiling: bool  True or False 
-#         write_corr:bool corr==spearman
-#         order_cats：nestd dict ,e.g:{col_name:[ordered catgories]}
-#         
-#         
-#         y_dist:str {'CLASSES,REGRESSION'}
-#         
-#         p_lo=0.01
-#         p_hi=0.99
-#         concrate=0.5  #param for ordinal variables
-#         miss_cnt=0.99
-#         P=0.05
-#         #Profile  params
-#         equal_dist='NO'   #'Y'  or 'y'
-#         num_category=5
-#         
-#         impmethodC='mean'  #q_test:scaler.fit()-->ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
-#         transf_C=1
-#         standardtransform_C=1
-#         cap_floor_C=1
-#         min_size=10
-# 
-#         impmethodO='mean'
-#         transf_O=1
-#         standardtransform_O=1
-#         cap_floor_O=None
-#         order_cats={'o3':['a','b','c','d']}    
-#     
-#         #param for nominal or binary varialbes
-#         valcount=10
-#         minbinn=10
-#         bonfer='y'
-#         talpha=0.05       # T Test significance level for collapse of bins;
-#         nom_method='index'   #binary,binary_encoder,index  binary generate settingwithcopywarning
-#         
-#         out: path of output (Profiling and correlation)
-#         transformer_weights : dict, optional
-#         n_jobs=1 
-#         random_state=np.random.RandomState(0)
-#         write_corr: True
-#         write_corr_method:'spearman',optional {'kendall','pearson','spearman'}
-# 
-# CEP.FSBMD:
-#     Params:
-#     ----------
-#     n_components=n_components
-#     y_dist: str  {'classes','regression'}
-#     scoring:scorer  function scorer(estimator,y_true,y_test) -->sklearn.metrics
-#     n_estimators: n_estimators  for tree_based model
-#     rfe:Recursive feature elimination mechanism,str {'RFECV','MYRFECV','SelectFromModel'} -->sklearn.feature_selection.RFECV  SelectFromModel
-#     step: int  step
-#     cv: cv int sklearn.model_selection
-#     transformer_weights:transformer_weights  for decomposition stage and  FSBMD stage
-# 
-# 
-# #get  decomposition  estimator
-# destimator = pipeline.named_steps['fsbmd'].get_dtransformer -->sklearn
-# 
-# #inspect selected_columns for each steps
-# pipeline.named_steps['recoded'].selected_columns
-# pipeline.named_steps['fsbmd'].selected_columns
-# 
-# #use  or reset internally estimator of pipeline
-# x__train=pipeline.named_steps['recoded'].transform(X_train)
-# x___train=pipeline.named_steps['fsbmd'].transform(X_train) --->X_train can't contains str and nan values,object
-# 
-# 
-# 
-# enter transformer within  pipeline object
-# pipeline.named_steps['recoded']
-# pipeline.named_steps['fsbmd']
-# enter transformer in featureunion object
-# recoded.get_params(deep=True)['re_cont']
-# fsbmd.get_params(deep=True)['decomposition']
-# 
-# 
-# #change var attrs for different dtypes
-#  're_cont','re_bina'
-# set_params(pipeline,dtype)  --->inspect all columns names from  dtype 
-# set_params(estimator,dtype,var) ---> inspect all attrs of column    
-# set_params(estimator,dtype,var,attr)    --> inspect attribute value of attr
-# set_params(estimator,dtype,var,attr,value)    --> set value of var 's attr
-# 
-# then reload transform method
-# x_reloaded=pipeline.transform(x)
-# 
-# #save model
-# 
-# import  pickle
-# pickle.dump(pipeline,open(r'C:\Users\admin\Desktop\pipeline.pkl','wb'))
-# pipeline=pickle.load(open(r'C:\Users\admin\Desktop\pipeline.pkl','rb'))
-# 
-# binary_file=pickle.dumps(pipeline)
-# pipeline=pickle.loads(binary_file)
-# =============================================================================
 
 
 
