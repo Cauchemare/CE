@@ -21,7 +21,8 @@ Feature selection from raw_data based lightgbm
 >**Optimized Lightgbm for Sparse Data**
 
 ##Basic Usage
->see CEP_Test.py
+>cmd console:
+>`python  CEP_Test.py numbers_of_rows`
 
 ##Time consumption and Report
 >see CE_Test report.txt

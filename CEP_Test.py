@@ -25,6 +25,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('n',type=int)
 args=parser.parse_args()
 
+
 cols_names=pd.read_excel(r'D:\CE\CE_TEST_DATA\var_list.xlsx',encoding='utf8',header=None).iloc[:,1].values
            
 df=pd.read_csv(r'D:\CE\CE_TEST_DATA\model_sample.csv',encoding='utf8',low_memory=False,nrows=args.n,header=None,names=cols_names)  #q2_pre  more efficient 
