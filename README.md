@@ -3,28 +3,28 @@
 >Feature selection project
 
 
-##But:
-###CEP:
+## But:
+### CEP:
 Recoded input data and output **Profiling**,**matrix correlation with target data** files and **recoded** data
 
-###FSFRL:
+### FSFRL:
 Feature selection from raw_data based lightgbm
 
 
 
-##Structure plan:
+## Structure plan:
 
-###CEP:
+### CEP:
 >![](https://i.imgur.com/gOFI0Xf.png)
 
-###FSFML:
+### FSFML:
 >**Optimized Lightgbm for Sparse Data**
 
-##Basic Usage
+## Basic Usage
 >cmd console:
 >`python  CEP_Test.py numbers_of_rows`
 
-##Time consumption and Report
+## Time consumption and Report
 >see CE_Test report.txt
 
 
