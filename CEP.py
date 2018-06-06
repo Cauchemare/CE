@@ -21,7 +21,6 @@ module.
                 filter new variable by using univariate logistic/regression
             update profile array
 '''
-import sklearn
 from sklearn.base import BaseEstimator,TransformerMixin,MetaEstimatorMixin
 from sklearn.base import clone
 from sklearn.utils import check_X_y
@@ -247,15 +246,12 @@ def writecorr(X,X_selected,y,out=None,method='spearman'):
             None
     
     """
-    
-    
-    x=X.copy()
-    x_s=X_selected.copy()
+
     writer=pd.ExcelWriter(out)
     
     
-    x.apply(lambda col: col.corr(x.y_target,method=method),axis=0).to_excel(writer,'all_variables',encoding='utf8',header=['y_target'])
-    x_s.apply(lambda col: col.corr(x.y_target,method=method),axis=0).to_excel(writer,'seleted_variables',encoding='utf8',header=['y_target'])
+    X.apply(lambda col: col.corr(y,method=method),axis=0).to_excel(writer,'all_variables',encoding='utf8',header=['y_target'])
+    X_selected.apply(lambda col: col.corr(y,method=method),axis=0).to_excel(writer,'seleted_variables',encoding='utf8',header=['y_target'])
     
     writer.save()
     
