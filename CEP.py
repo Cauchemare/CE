@@ -4,27 +4,14 @@
 """
 Library for selecting features
 
+According to different dtype,we generate recoding rules for different variables,and retain variables filtered by set of conditions. 
+
 more detail see https://github.com/Cauchemare/CE
 
 
 """
 from  __future__ import absolute_import,print_function
-'''  CE2:Recoded and Profile stage
-Based on various data_types,the module aimes at producing Profile file and  generating keep_list,which  contains list of variables useable for next
-module.
-1.all_conditions
-     how to apply all columns to different conditions?  apply(all([c_condition...]))
-     filter rights cols-->return useable cols
-2.calculation for various type_batch data  using single dispatch generic function,which sharing self.funcs and self.attrs
- using Pipeline and Featureunion corresponding various type of datas
-    for each batch:
-        for each columns:
-            if variable.dtype isin(continuous,ordinal):
-                fillna(var_miss)
-                cap_floor
-                filter new variable by using univariate logistic/regression
-            update profile array
-'''
+
 from sklearn.base import BaseEstimator,TransformerMixin,MetaEstimatorMixin
 from sklearn.base import clone
 from sklearn.utils import check_X_y

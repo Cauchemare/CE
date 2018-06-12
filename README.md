@@ -5,7 +5,7 @@
 
 ## But:
 ### CEP:
-Recoded input data and output **Profiling**,**matrix correlation with target data** files and **recoded** data
+Recode input data and output **Profiling**,**matrix correlation with target data** files and **recoded** data
 
 ### FSFRL:
 Feature selection from raw_data based lightgbm
