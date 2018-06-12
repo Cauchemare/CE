@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Apr 21 11:37:58 2018
 
-@author: luyao.li 
+
+"""
+Library for selecting features
+
+more detail see https://github.com/Cauchemare/CE
+
+
 """
 from  __future__ import absolute_import,print_function
 '''  CE2:Recoded and Profile stage
