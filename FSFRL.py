@@ -24,7 +24,7 @@ from scipy.sparse  import csr_matrix
 def  c_missing(df,df_miss=None):
     if df_miss is None:
         df_miss=pd.isnull(df)
-    return df_miss.sum()<(obs*miss_cnt)
+    return np.sum(df_miss) < (obs*miss_cnt)
 
 def c_variance(df,df_miss,threshold=0.0):
     v=np.var(np.compress(~df_miss,df))
@@ -79,7 +79,6 @@ class FSFR(BaseEstimator,TransformerMixin):
     def _fit(self,X,Y):
         global  miss_cnt,obs
         obs=len(X)
-        
         miss_cnt= self.miss_rte
         
         if self.u_cols is not None:
