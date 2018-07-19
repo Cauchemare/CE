@@ -1261,6 +1261,7 @@ class FSBMD(BaseEstimator,TransformerMixin):
             rfc=XGBClassifier(n_estimators=self.n_estimators)
             if self.scoring=='auto':
                 scoring=make_scorer(auc_mc)
+
                 
         else:
             self.decomposition_estimator=PCA(n_components=0.99 if self.n_components is None else self.n_components,svd_solver ='full')
@@ -1268,7 +1269,11 @@ class FSBMD(BaseEstimator,TransformerMixin):
             rfc=XGBRegressor(n_estimators=self.n_estimators)
             if scoring=='auto':
                 scoring=make_scorer(accuracy_score)
-                
+        
+        if not locals().get('scoring'):
+            scoring=make_scorer(self.scoring)
+            
+            
         rfe=self.rfe(rfc,step=self.step,cv=self.cv,scoring=scoring)   #Selectfrommodel,myrfe
         final_feature_union=MyFeatureUnion(transformer_list=[('decomposition',make_pipeline(StandardScaler(),PCA(),self.decomposition_estimator)),
           ('fsbm',FSBM(rlr,rfe))],transformer_weights=self.transformer_weights,n_jobs=1) 
