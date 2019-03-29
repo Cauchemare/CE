@@ -1056,8 +1056,8 @@ class  Recoded(BaseEstimator,TransformerMixin):
         write_corr_method: str,  {‘pearson’, ‘kendall’, ‘spearman’}
         
         
-        y_dist:str,{'CLASSES,REGRESSION'};distribution of  y
-        miss_cnt:float 0-1,default 0.99 ; maximum missing rate allowed  
+        Y_dist:str,{'CLASSES,REGRESSION'};distribution of  y
+        Miss_cnt:float 0-1,default 0.99 ; maximum missing rate allowed  
 
         out: str;path of output (Profling and correlation)
         transformer_weights : ist of (string, transformer) tuples
@@ -1066,45 +1066,45 @@ class  Recoded(BaseEstimator,TransformerMixin):
                 Number of jobs to run in parallel (default 1).
         random_state:default np.random.RandomState(0);random_seed
         
-        prefix:str ,default 'f_';variable recoding prefix        
+        Prefix:str ,default 'f_';variable recoding prefix        
          
          
         
         #Continuous and Ordinal variable types
-        P: float,default 0.05;Pvalue threshold to include variable
-        equal_dist:str {'No','YES','yes'},default 'yes'; Use equal distance for dividing variables into groups for profiling (Y/N)
-        num_category:int,default 5;Maximum number of categories for profiling variables
-        min_size:int,default 10; Minimum missing group size for Equal Response imputation
+        p: float,default 0.05;Pvalue threshold to include variable
+        Equal_dist:str {'No','YES','yes'},default 'yes'; Use equal distance for dividing variables into groups for profiling (Y/N)
+        Num_category:int,default 5;Maximum number of categories for profiling variables
+        Min_size:int,default 10; Minimum missing group size for Equal Response imputation
      
             #Continuous variable types
             
-            p_lo: float 0-1,default 0.01; Lower percentile for checking constant value
-            p_hi: float 0-1,default 0.99; Upper percentile for checking constant value
-            impmethodC: str,{'mean','std'，'median', 'iqr','mad'，'range'，'midrange'，'sum','euclen','ustd','maxabs'},default 'mean'
+            P_lo: float 0-1,default 0.01; Lower percentile for checking constant value
+            P_hi: float 0-1,default 0.99; Upper percentile for checking constant value
+            ImpmethodC: str,{'mean','std'，'median', 'iqr','mad'，'range'，'midrange'，'sum','euclen','ustd','maxabs'},default 'mean'
                         What method to use for missing imputation for continuous variables
-            transf_C: boolean,default True;Include transformed variables in evaluation (Y/N)
-            standardtransform_C: boolean,default True; Standardization options: see sklearn.preprocessing.StandardScaler
-            cap_floor_C: boolean,default True;Do you want to do capping / flooring to handle outliers? (Y/N)
+            Transf_C: boolean,default True;Include transformed variables in evaluation (Y/N)
+            Standardtransform_C: boolean,default True; Standardization options: see sklearn.preprocessing.StandardScaler
+            Cap_floor_C: boolean,default True;Do you want to do capping / flooring to handle outliers? (Y/N)
             
             #Ordinal variable types
             
-            impmethodO: str,{'mean','std'，'median', 'iqr','mad'，'range'，'midrange'，'sum','euclen','ustd','maxabs'},default 'median'
+            ImpmethodO: str,{'mean','std'，'median', 'iqr','mad'，'range'，'midrange'，'sum','euclen','ustd','maxabs'},default 'median'
                         What method to use for missing imputation for ordinal variables
-            transf_O: boolean,default False;Include transformed variables in evaluation (Y/N)
-            standardtransform_O: boolean,default False; Standardization options: see sklearn.preprocessing.StandardScaler
-            cap_floor_O: boolean,default False;Do you want to do capping / flooring to handle outliers? (Y/N)
-            order_cats：nestd dict ,Categorical variable;e.g:{col_name:[ordered catgories]}
+            Transf_O: boolean,default False;Include transformed variables in evaluation (Y/N)
+            Standardtransform_O: boolean,default False; Standardization options: see sklearn.preprocessing.StandardScaler
+            Cap_floor_O: boolean,default False;Do you want to do capping / flooring to handle outliers? (Y/N)
+            Order_cats：nestd dict ,Categorical variable;e.g:{col_name:[ordered catgories]}
                         this ensures str value in Categorical variable converted to numeric values in a  customized order
 
         #Binary and Nominal variable types;
-        concrate: float 0-1,default 0.5; Maximum amount of  count that can be in a single value of an independent variable
+        Concrate: float 0-1,default 0.5; Maximum amount of  count that can be in a single value of an independent variable
             
             #Nominal variable types
-                valcount: int,default 10;maximum number of unique values allowed. Set to 0 to allow any number
-                minbinn: int,default 100;Minimum count in a bin to be usable. 
-                bonfer:str {'No','YES','yes'},default 'yes';Do Bonferoni adjustment for talpha? (Y/N)
-                talpha: float,default 0.05;T Test significance level for collapse of bins
-                nom_method: str {'binary','binary_encoder','index'};Recoding method for nominal variables
+                Valcount: int,default 10;maximum number of unique values allowed. Set to 0 to allow any number
+                Minbinn: int,default 100;Minimum count in a bin to be usable. 
+                Bonfer:str {'No','YES','yes'},default 'yes';Do Bonferoni adjustment for talpha? (Y/N)
+                Talpha: float,default 0.05;T Test significance level for collapse of bins
+                Nom_method: str {'binary','binary_encoder','index'};Recoding method for nominal variables
     
     Attributes:
         combined_features:MyFeatureUnion instance fitted;see MyFeatureUnion class
