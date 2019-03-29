@@ -1051,7 +1051,7 @@ class  Recoded(BaseEstimator,TransformerMixin):
         
         type_cols:dict or  mapping type,variable sets {'cont_cols':list,'ordi_cols':list,'bina_cols':list,'norm_cols':list},
                   keys name:{'cont_cols','ordi_cols','norm_cols','bina_cols'},not necessary to  include all keys name 
-        Proling: boolean,if output Profiling file
+        profiling: boolean,if output Profiling file
         write_corr:boolean,if output correlation file
         write_corr_method: str,  {‘pearson’, ‘kendall’, ‘spearman’}
         
