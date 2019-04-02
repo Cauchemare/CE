@@ -91,10 +91,10 @@ class FSFR(BaseEstimator,TransformerMixin):
         X_s=X.reindex(columns=self.use_cols)         #retain use_cols
         o_cols=X_s.select_dtypes(include=['object']).columns  #find object dtype columns
         
-        self.tC_cols=np.compress(np.isin(o_cols,self.type_cols['cont_cols']),o_cols) 
+        self.tC_cols=np.compress(np.isin(o_cols,self.type_cols.get('cont_cols',[])),o_cols) 
         X_s.loc[:,self.tC_cols]=X_s.loc[:,self.tC_cols].astype(np.float16)  #convert continous variables in o_cols to np.float16
         
-        self.tO_cols=np.compress(np.isin(o_cols,self.type_cols['cont_cols'],invert=True),o_cols) #fetch tO_cols,not continuous variables in o_cols
+        self.tO_cols=np.compress(np.isin(o_cols,self.type_cols.get('cont_cols',[]),invert=True),o_cols) #fetch tO_cols,not continuous variables in o_cols
 
         X_s=pd.get_dummies(X_s,columns=self.tO_cols)
    
